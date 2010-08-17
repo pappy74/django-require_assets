@@ -1,0 +1,4 @@
+The goal of django-requires_js_css is to provide a way for individual templates to include their own JavaScript and CSS files, while at the same time adhering to site performance best practices.
+
+This means that if you have, for example, a 'cool button' widget requested via a templatetag and defined by 'cool_button.html', you can specify 'cool_button.css' in the html file, and the css file will actually be loaded in the "HEAD" where it belongs (this is customizable though).
+
