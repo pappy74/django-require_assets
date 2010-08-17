@@ -24,8 +24,7 @@ BASIC USAGE
 - In your template file::
 
     {% load requires %}
-    {% requires cool_button.css %}
-    {% requires cool_button.js %}
+    {% requires cool_button.css cool_button.js %}
     
 That's it.  Your response will look something like::
 
