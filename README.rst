@@ -69,6 +69,7 @@ UPDATES
 *******
 
 2010-10-20
+----------
 - absolute URIs can now be required.  They will not have MEDIA_URL prepended (obviously), will not be 'compressed', and are included within their group in the response before any compressed content.
 - New templatetag 'requires_script'.  Use this to require a block of JavaScript.  Takes an optional 'name' parameter.  
 
