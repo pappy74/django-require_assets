@@ -43,9 +43,11 @@ API
 ***
 Template Tags
 {% requires [<group>] <file1> <file2> ... <fileN> %}
-- group can be 
-  - default: load CSS in the head and JS before the closing BODY tag
-  - inhead: used to load JS in the head
+
+group can be 
+- default: load CSS in the head and JS before the closing BODY tag
+- inhead: used to load JS in the head
+
 {% requires_script [<name>] %}<javascript>{% endrequires_script %}
 - name is optional.  If given, the named javascript block will only be included once.
 
