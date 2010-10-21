@@ -11,7 +11,7 @@ There is still a ton left to do here, and I plan on continuing work on it in the
 
 - Document, document, document.
 - Add test cases
-- Allow named JS/CSS 'blocks' and not just files
+- Allow named CSS 'blocks' and not just files
 - Change parameters to be resolvable
 - Allow more customization of 'groups'
 - Support more than just django-css for compression/compiling
@@ -39,6 +39,16 @@ That's it.  Your response will look something like::
         </body>
     </html>
 
+API
+***
+Template Tags
+{% requires [<group>] <file1> <file2> ... <fileN> %}
+- group can be 
+  - default: load CSS in the head and JS before the closing BODY tag
+  - inhead: used to load JS in the head
+{% requires_script [<name>] %}<javascript>{% endrequires_script %}
+- name is optional.  If given, the named javascript block will only be included once.
+
 NOTES
 *****
 
@@ -49,5 +59,12 @@ NOTES
 - ordering of files *should* "just work", but I'm guessing there will be problematic edge cases.
 - Yes, this *will* work if you render a template within view code, grab the response content and embed it within another template.  Although said pattern is hacky and should never, ever, ever be used.  Um... *cough*... yeah ;)
 
+
+UPDATES
+*******
+
+2010-10-20
+- absolute URIs can now be required.  They will not have MEDIA_URL prepended (obviously), will not be 'compressed', and are included within their group in the response before any compressed content.
+- New templatetag 'requires_script'.  Use this to require a block of JavaScript.  Takes an optional 'name' parameter.  
 
 Ideas, criticisms and offers of help are all, of course, greatly appreciated.
