@@ -42,6 +42,7 @@ That's it.  Your response will look something like::
 API
 ***
 Template Tags
+-------------
 {% requires [<group>] <file1> <file2> ... <fileN> %}
 
 group can be 
