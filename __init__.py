@@ -12,7 +12,10 @@ requires = {}
 REQUIRES = {
     'js_template': "\t<script src='%s'></script>\n",
     'css_template': "\t<link href='%s' rel='stylesheet'>\n",
-    'prefixes': {},
+    'paths': { 
+        'js': { '': 'js/' },
+        'css': { '': 'css/' },
+    },
     'file_tokens': {
         'css': '@@@CSS:<GROUP>:<INDEX>@@@',
         'js': '@@@JS:<GROUP>:<INDEX>@@@',
@@ -30,7 +33,7 @@ REQUIRES = {
 
 if hasattr(settings, 'REQUIRES'):
     # update the setting that are themselves dicts, first
-    for setting in ['prefixes', 'file_tokens', 'placeholder_tags']:
+    for setting in ['paths', 'file_tokens', 'placeholder_tags']:
         REQUIRES[setting].update(settings.REQUIRES.pop(setting, {}))
 
     # then update the rest
@@ -47,20 +50,11 @@ def get_request_key(request):
 
 # require these file(s)
 def requireFile(request, files, group='default'):
-    # update prefixes
     tag = ""
     for filename in files:
-
         # distinguish between css and js files
         extension = os.path.splitext(filename)[1][1:].lower()
-
-        # add prefixes as specified
-        prefixes = REQUIRES['prefixes'].get(extension, {})
-        for prefix, substitution in prefixes.items():
-            if ( filename.startswith(prefix) ):
-                filename = substitution + filename
-                break
-
+        
         tag += _add_req(request, group, extension, filename, filename=filename)
     return tag
 
@@ -125,6 +119,7 @@ def _add_req(request, group, reqtype, unique_id, filename=None, block=None):
     return token
 
 class RequiresFileObj:
+    asset_type = "" # this needs to be defined by the subclass
     def __init__(self, filename):
         self.filename = filename
 
@@ -143,14 +138,32 @@ class RequiresFileObj:
             # absolute path on this domain
             return self.filename
             
-        return self.path() + self.filename
+        return self._path() + self.filename
 
     def isCompressible(self):
         return not self.isFullURL()
         
-    def path(self):
-        return ""
+    def _path(self):
+        """
+        For a filename of "script.js", returns "/static/js/" (for example).  It
+        does this by starting with the MEDIA_URL, then adding the entry of the
+        first 'REQUIRES.paths.<type>' item that matches.
+        
+        This should only really be used by 'relative'-type filenames.
+        """
+        path = settings.MEDIA_URL
+        
+        # add paths as specified
+        for prefix, subpath in self.getPrefixDict().items():
+            if ( self.filename.startswith(prefix) ):
+                path += subpath
+                break;
 
+        return path
+        
+    def getPrefixDict(self):
+        return REQUIRES['paths'][self.asset_type]
+        
 class RequiresBlockObj:
     def __init__(self, block):
         self.block = block
@@ -159,24 +172,22 @@ class RequiresBlockObj:
         return True
 
 class CSSFile(RequiresFileObj):
+    asset_type = "css"
     def render(self):
         return REQUIRES['css_template'] % self.getURL()
 
-    def path(self):
-        return settings.MEDIA_URL + "css/"
-
 class CSSBlock(RequiresBlockObj):
+    asset_type = "css"
     def render(self):
         return "\t<style>%s</style>\n" % self.block
 
 class JSFile(RequiresFileObj):
+    asset_type = "js"
     def render(self):
         return REQUIRES['js_template'] % self.getURL()
 
-    def path(self):
-        return settings.MEDIA_URL + "js/"
-
 class JSBlock(RequiresBlockObj):
+    asset_type = "js"
     def render(self):
         return "\t<script>%s</script>\n" % self.block
 
