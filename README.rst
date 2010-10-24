@@ -50,6 +50,12 @@ group can be
 - default: load CSS in the head and JS before the closing BODY tag
 - inhead: used to load JS in the head
 
+file can be
+
+- fully-qualified URL (eg. http://www.example.com/js/script.js)
+- absolute URL (eg. /other_scripts/script.js)
+- relative URL (eg. script.js) - using this triggers prefix composition
+
 {% requires_script [<name>] %}<javascript>{% endrequires_script %}
 
 - name is optional.  If given, the named javascript block will only be included once.
@@ -67,6 +73,10 @@ NOTES
 
 UPDATES
 *******
+
+2010-10-23
+----------
+- absolute paths on the current domain can now be specified (thanks silent1mezzo!)
 
 2010-10-20
 ----------

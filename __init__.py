@@ -9,10 +9,9 @@ from django.utils.encoding import smart_unicode
 
 requires = {}
 
-# TODO: make these 'settings'
 REQUIRES = {
-    'js_template': "\t<script src='"+settings.MEDIA_URL+"js/%s'></script>\n",
-    'css_template': "\t<link href='"+settings.MEDIA_URL+"css/%s' rel='stylesheet'>\n",
+    'js_template': "\t<script src='%s'></script>\n",
+    'css_template': "\t<link href='%s' rel='stylesheet'>\n",
     'prefixes': {},
     'file_tokens': {
         'css': '@@@CSS:<GROUP>:<INDEX>@@@',
@@ -129,22 +128,42 @@ class RequiresFileObj:
     def __init__(self, filename):
         self.filename = filename
 
-    def absoluteURL(self):
+    def isFullURL(self):
         return re.match('^https?://', self.filename)
 
-    def compressible(self):
-        return not self.absoluteURL()
+    def isAbsoluteURL(self):
+        return self.filename.startswith("/")
+
+    def getURL(self):
+        if self.isFullURL() or self.isAbsoluteURL():
+            # absolute URL with protocol/domain specified
+            return self.filename
+        
+        if self.isAbsoluteURL():
+            # absolute path on this domain
+            return self.filename
+            
+        return self.path() + self.filename
+
+    def isCompressible(self):
+        return not self.isFullURL()
+        
+    def path(self):
+        return ""
 
 class RequiresBlockObj:
     def __init__(self, block):
         self.block = block
 
-    def compressible(self):
+    def isCompressible(self):
         return True
 
 class CSSFile(RequiresFileObj):
     def render(self):
-        return REQUIRES['css_template'] % self.filename
+        return REQUIRES['css_template'] % self.getURL()
+
+    def path(self):
+        return settings.MEDIA_URL + "css/"
 
 class CSSBlock(RequiresBlockObj):
     def render(self):
@@ -152,10 +171,10 @@ class CSSBlock(RequiresBlockObj):
 
 class JSFile(RequiresFileObj):
     def render(self):
-        if self.absoluteURL():
-            return "\t<script src='%s'></script>\n" % self.filename
-        else:
-            return REQUIRES['js_template'] % self.filename
+        return REQUIRES['js_template'] % self.getURL()
+
+    def path(self):
+        return settings.MEDIA_URL + "js/"
 
 class JSBlock(RequiresBlockObj):
     def render(self):
@@ -192,7 +211,7 @@ def _fix_html_type(request_key, html, filetype):
         uncompressible_html = u""
         for index in indices:
             fileObj = files[index]
-            if fileObj.compressible():
+            if fileObj.isCompressible():
                 file_html += fileObj.render()
             else:
                 uncompressible_html += fileObj.render()
