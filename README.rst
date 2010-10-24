@@ -74,6 +74,10 @@ NOTES
 UPDATES
 *******
 
+2010-10-24
+----------
+- changed 'prefixes' setting to 'paths' and moved the base asset path there (that is, 'css/' for style files, etc).  In general, trying to make the 'paths' setting more flexible and to consolidate asset-specific setting info into one place.
+
 2010-10-23
 ----------
 - absolute paths on the current domain can now be specified (thanks silent1mezzo!)
