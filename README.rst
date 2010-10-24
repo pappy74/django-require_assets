@@ -1,7 +1,7 @@
-Django requires_js_css
+Django require_assets
 ======================
 
-The goal of django-requires_js_css is to provide a way for individual templates to include their own JavaScript and CSS files, while at the same time adhering to site performance best practices.
+The goal of django-require_assets is to provide a way for individual templates to include their own JavaScript and CSS files, while at the same time adhering to site performance best practices.
 
 For example, if you have a 'cool button' widget requested via a templatetag and defined by 'cool_button.html', you can specify 'cool_button.css' in the 'cool_button.html' file itself, and the css file will actually be loaded in the "HEAD" where it belongs (this is customizable though).
 
@@ -77,6 +77,7 @@ UPDATES
 2010-10-23
 ----------
 - absolute paths on the current domain can now be specified (thanks silent1mezzo!)
+- changed name from requires_js_css to require_assets.  Seemed appropriate.
 
 2010-10-20
 ----------
