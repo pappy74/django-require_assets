@@ -3,6 +3,8 @@ from django.conf import settings
 import os.path
 import logging
 
+from utils import parse_tag_args
+
 from requires_js_css import requireFile, requireBlock
 
 register = template.Library()
@@ -33,7 +35,7 @@ def requires_script(parser, token):
         args = token.split_contents()[1:]
     except IndexError:
         pass
-        
+
     group = "'default'"
     name = None
     for arg in args:
@@ -43,16 +45,25 @@ def requires_script(parser, token):
                 group = value
         else:
             name = arg
-            
+
     nodelist = parser.parse(('endrequires_script',))
     parser.delete_first_token()
     return RequiresBlockNode( "script", group, name, nodelist )
-    
+
+@register.tag
+def requires_css(parser, token):
+    args = parse_tag_args(token)
+    group = args.get("group", '"default"')
+    name = args.get("name", None)
+    nodelist = parser.parse(('endrequires_css',))
+    parser.delete_first_token()
+    return RequiresBlockNode( "style", group, name, nodelist )
+
 class RequiresNode(template.Node):
     def __init__(self, group, files):
         self.files = files
         self.group = group
-        
+
     def render(self, context):
         try:
             request = context["request"]

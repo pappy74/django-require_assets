@@ -11,7 +11,6 @@ There is still a ton left to do here, and I plan on continuing work on it in the
 
 - Document, document, document.
 - Add test cases
-- Allow named CSS 'blocks' and not just files
 - Change parameters to be resolvable
 - Allow more customization of 'groups'
 - Support more than just django-css for compression/compiling
@@ -56,9 +55,17 @@ file can be
 - absolute URL (eg. /other_scripts/script.js)
 - relative URL (eg. script.js) - using this triggers prefix composition
 
-{% requires_script [<name>] %}<javascript>{% endrequires_script %}
+{% requires_css group=<group> name=<name> %}<css>{% endrequires_css %}
+{% requires_script group=<group> name=<name> %}<javascript>{% endrequires_script %}
 
-- name is optional.  If given, the named javascript block will only be included once.
+- name is optional.  If given, the named block will only be included once.
+- group is optional.  Same as the 'group' in the 'requires' tag.
+
+SETTINGS
+********
+
+See example_settings.py.
+
 
 NOTES
 *****
@@ -73,6 +80,16 @@ NOTES
 
 UPDATES
 *******
+
+2011-04-29
+----------
+- reworked the settings dict to be hopefully much clearer
+- added lots of comments and did some refactoring
+- added "requires_css" and "requires_script" template tags
+- added django-require_assets.get_assets function
+- included utils.py.  Currently only contains a helper function to get args in
+a templatetag
+- removed obsolete get/set_request_key functions
 
 2010-10-24
 ----------
