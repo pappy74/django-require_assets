@@ -43,7 +43,7 @@ API
 Template Tags
 -------------
 
-*requires*
+**requires**
 
     {% requires [<group>] <file1> <file2> ... <fileN> %}
 
@@ -58,7 +58,7 @@ Template Tags
 - absolute URL (eg. /other_scripts/script.js)
 - relative URL (eg. script.js) - using this triggers prefix composition
 
-*requires_css* and *requires_script*
+**requires_css** and **requires_script**
     
     {% requires_css group=<group> name=<name> %}<css>{% endrequires_css %}
     {% requires_script group=<group> name=<name> %}<javascript>{% endrequires_script %}
@@ -69,7 +69,7 @@ Template Tags
 Module Functions
 ----------------
 
-*get_assets(request)*
+**get_assets(request)**
 
 This returns a dictionary of all required assets (by asset type).  This is handy for AJAX requests.  Specifically, before returning an AJAX response, grab all the required assets and include them along with the response.  Then, the client can grab any assets it doesn't already have.
 
