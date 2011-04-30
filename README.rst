@@ -42,7 +42,7 @@ API
 ***
 Template Tags
 -------------
-{% requires [<group>] <file1> <file2> ... <fileN> %}
+    {% requires [<group>] <file1> <file2> ... <fileN> %}
 
 group can be 
 
@@ -55,12 +55,16 @@ file can be
 - absolute URL (eg. /other_scripts/script.js)
 - relative URL (eg. script.js) - using this triggers prefix composition
 
-{% requires_css group=<group> name=<name> %}<css>{% endrequires_css %}
-
-{% requires_script group=<group> name=<name> %}<javascript>{% endrequires_script %}
+    {% requires_css group=<group> name=<name> %}<css>{% endrequires_css %}
+    {% requires_script group=<group> name=<name> %}<javascript>{% endrequires_script %}
 
 - name is optional.  If given, the named block will only be included once.
 - group is optional.  Same as the 'group' in the 'requires' tag.
+
+    <module>.get_assets(request)
+
+This returns a dictionary of all required assets (by asset type).  This is handy for AJAX requests.  Specifically, before returning an AJAX response, grab all the required assets and include them along with the response.  Then, the client can grab any assets it doesn't already have.
+
 
 SETTINGS
 ********
@@ -88,8 +92,7 @@ UPDATES
 - added lots of comments and did some refactoring
 - added "requires_css" and "requires_script" template tags
 - added django-require_assets.get_assets function
-- included utils.py.  Currently only contains a helper function to get args in
-a templatetag
+- included utils.py.  Currently only contains a helper function to get args in a templatetag
 - removed obsolete get/set_request_key functions
 
 2010-10-24
