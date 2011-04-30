@@ -42,7 +42,7 @@ API
 ***
 Template Tags
 -------------
-    {% requires [<group>] <file1> <file2> ... <fileN> %}
+`{% requires [<group>] <file1> <file2> ... <fileN> %}`
 
 group can be 
 
@@ -55,8 +55,8 @@ file can be
 - absolute URL (eg. /other_scripts/script.js)
 - relative URL (eg. script.js) - using this triggers prefix composition
 
-    {% requires_css group=<group> name=<name> %}<css>{% endrequires_css %}
-    {% requires_script group=<group> name=<name> %}<javascript>{% endrequires_script %}
+`{% requires_css group=<group> name=<name> %}<css>{% endrequires_css %}`
+`{% requires_script group=<group> name=<name> %}<javascript>{% endrequires_script %}`
 
 - name is optional.  If given, the named block will only be included once.
 - group is optional.  Same as the 'group' in the 'requires' tag.
