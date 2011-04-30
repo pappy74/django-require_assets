@@ -42,7 +42,9 @@ API
 ***
 Template Tags
 -------------
-------
+
+*requires*
+
     {% requires [<group>] <file1> <file2> ... <fileN> %}
 
 <group> can be 
@@ -50,22 +52,24 @@ Template Tags
 - default: load CSS in the head and JS before the closing BODY tag
 - inhead: used to load JS in the head
 
-<filen> can be
+<fileX> can be
 
 - fully-qualified URL (eg. http://www.example.com/js/script.js)
 - absolute URL (eg. /other_scripts/script.js)
 - relative URL (eg. script.js) - using this triggers prefix composition
 
-------
+*requires_css* and *requires_script*
+    
     {% requires_css group=<group> name=<name> %}<css>{% endrequires_css %}
     {% requires_script group=<group> name=<name> %}<javascript>{% endrequires_script %}
 
 - name is optional.  If given, the named block will only be included once.
 - group is optional.  Same as the 'group' in the 'requires' tag.
 
-------
-    <module>.get_assets(request)
+Module Functions
+----------------
 
+*get_assets(request)*
 
 This returns a dictionary of all required assets (by asset type).  This is handy for AJAX requests.  Specifically, before returning an AJAX response, grab all the required assets and include them along with the response.  Then, the client can grab any assets it doesn't already have.
 
