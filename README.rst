@@ -44,6 +44,7 @@ Template Tags
 -------------
 ---
     {% requires [<group>] <file1> <file2> ... <fileN> %}
+
 ---
 
 group can be 
@@ -60,6 +61,7 @@ file can be
 ---
     {% requires_css group=<group> name=<name> %}<css>{% endrequires_css %}
     {% requires_script group=<group> name=<name> %}<javascript>{% endrequires_script %}
+
 ---
 
 - name is optional.  If given, the named block will only be included once.
@@ -67,6 +69,7 @@ file can be
 
 ---
     <module>.get_assets(request)
+
 ---
 
 This returns a dictionary of all required assets (by asset type).  This is handy for AJAX requests.  Specifically, before returning an AJAX response, grab all the required assets and include them along with the response.  Then, the client can grab any assets it doesn't already have.
