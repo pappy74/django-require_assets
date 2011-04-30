@@ -61,6 +61,7 @@ Template Tags
 **requires_css** and **requires_script**
     
     {% requires_css group=<group> name=<name> %}<css>{% endrequires_css %}
+
     {% requires_script group=<group> name=<name> %}<javascript>{% endrequires_script %}
 
 - name is optional.  If given, the named block will only be included once.
